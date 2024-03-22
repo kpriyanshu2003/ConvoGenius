@@ -4,15 +4,24 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import OAuth from "./OAuth";
 import Link from "next/link";
+import { signInUsingEmailPassword } from "@/actions/auth";
+import { useRouter } from "next/navigation";
 
-function SigninForm() {
+function SignInForm() {
+  const router = useRouter();
+  const [formData, setFormData] = React.useState({ email: "", password: "" });
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
+    signInUsingEmailPassword(formData.email, formData.password)
+      .then((res) => {
+        document.cookie = `access_token=${res?.session.access_token}; path=/; max-age=86400`;
+        if (res) router.push("/");
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div className="grid place-items-center h-screen relative">
-      <div className="">
+      <>
         <div className="top-10 left-1/2 -translate-x-1/2 absolute h-12  w-12 px-2 aspect-square flex items-center justify-center rounded-full bg-white text-gray-950">
           <svg
             width="41"
@@ -42,11 +51,19 @@ function SigninForm() {
             placeholder="Email"
             type="email"
             className="my-4 py-5 rounded-lg"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           />
           <Input
             placeholder="Password"
             type="password"
             className="my-4 py-5 rounded-lg"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
           />
           <Button
             className="bg-[#10a37f] hover:bg-[#0e9272] outline-none w-full py-5 transition duration-300"
@@ -62,9 +79,9 @@ function SigninForm() {
           </Link>
         </span>
         <OAuth />
-      </div>
+      </>
     </div>
   );
 }
 
-export default SigninForm;
+export default SignInForm;

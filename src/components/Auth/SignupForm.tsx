@@ -4,11 +4,29 @@ import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import OAuth from "./OAuth";
 import Link from "next/link";
+import { signUpUsingEmailPassword } from "@/actions/auth";
+import { useRouter } from "next/navigation";
 
 function SignupForm() {
+  const router = useRouter();
+  const [formData, setFormData] = React.useState({
+    email: "",
+    password: "",
+    username: "",
+  });
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
+    console.log(formData);
+    signUpUsingEmailPassword(
+      formData.email,
+      formData.password,
+      formData.username
+    )
+      .then((res) => {
+        console.log(res);
+        if (res) router.push("/");
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div className="grid place-items-center h-screen relative">
@@ -42,16 +60,28 @@ function SignupForm() {
             placeholder="Username"
             type="text"
             className="my-4 py-5 rounded-lg"
+            value={formData.username}
+            onChange={(e) =>
+              setFormData({ ...formData, username: e.target.value })
+            }
           />
           <Input
             placeholder="Email"
             type="email"
             className="my-4 py-5 rounded-lg"
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           />
           <Input
             placeholder="Password"
             type="password"
             className="my-4 py-5 rounded-lg"
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
           />
           <Button
             className="bg-[#10a37f] hover:bg-[#0e9272] outline-none w-full py-5 transition duration-300"

@@ -8,18 +8,18 @@ export async function signUpUsingEmailPassword(
   password: string,
   username: string
 ) {
+  let user;
   const { data, error } = await supabase.auth.signUp({ email, password });
   if (error) throw error;
-  if (data) {
-    if (data.user?.email)
-      await db.user.create({
-        data: {
-          email: data.user?.email,
-          uid: data.user.id,
-          name: username,
-        },
-      });
-  }
+  if (data && data.user?.email)
+    user = await db.user.create({
+      data: {
+        email: data.user?.email,
+        uid: data.user.id,
+        name: username,
+      },
+    });
+  return user;
 }
 
 export async function signInUsingEmailPassword(
