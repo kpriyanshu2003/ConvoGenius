@@ -39,6 +39,11 @@ function SignupForm() {
             Create an Account
           </span>
           <Input
+            placeholder="Username"
+            type="text"
+            className="my-4 py-5 rounded-lg"
+          />
+          <Input
             placeholder="Email"
             type="email"
             className="my-4 py-5 rounded-lg"
@@ -57,7 +62,7 @@ function SignupForm() {
         </form>
         <span className="text-sm text-center block my-4">
           Already have an account ?
-          <Link href="/signin" className="text-[#10a37f]">
+          <Link href="/signin" className="text-[#10a37f] ml-2">
             Login
           </Link>
         </span>

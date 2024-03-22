@@ -57,7 +57,7 @@ function SigninForm() {
         </form>
         <span className="text-sm text-center block my-4">
           Already have an account ?
-          <Link href="/signup" className="text-[#10a37f]">
+          <Link href="/signup" className="text-[#10a37f] ml-2">
             Login
           </Link>
         </span>
