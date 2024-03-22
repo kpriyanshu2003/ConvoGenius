@@ -30,8 +30,14 @@ export async function signInUsingEmailPassword(
     email,
     password,
   });
-  const user = await db.user.findUnique({ where: { email } });
   if (error) throw error;
+  if (data) {
+    supabase.auth.setSession({
+      access_token: data.session.access_token,
+      refresh_token: data.session.refresh_token,
+    });
+  }
+  const user = await db.user.findUnique({ where: { email } });
   if (user && data) return data;
   return null;
 }

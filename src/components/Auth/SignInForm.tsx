@@ -14,7 +14,7 @@ function SignInForm() {
     e.preventDefault();
     signInUsingEmailPassword(formData.email, formData.password)
       .then((res) => {
-        document.cookie = `access_token=${res?.session.access_token}; path=/; max-age=86400`;
+        // document.cookie = `access_token=${res?.session.access_token}; path=/; max-age=86400`;
         if (res) router.push("/");
       })
       .catch((err) => console.log(err));
