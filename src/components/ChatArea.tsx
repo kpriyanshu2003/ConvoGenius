@@ -13,6 +13,7 @@ import {
 import { createInteraction } from "@/actions/interactions";
 import { useRouter } from "next/navigation";
 import ChatList from "./ChatArea/ChatList";
+import { chatGPT } from "@/actions/chatgpt";
 
 export default function ChatArea({ params }: { params?: string }) {
   const router = useRouter();
@@ -35,9 +36,13 @@ export default function ChatArea({ params }: { params?: string }) {
       });
   }, [params, router]);
 
-  const handleInteract = () => {
-    createInteraction({ title: message, content: "Lorem Ipsum" })
+  const handleInteract = async () => {
+    createInteraction({
+      title: message,
+      content: (await chatGPT(message)) || "",
+    })
       .then((data) => {
+        console.log(data);
         if (params) {
           addInteractionToCollective(
             localStorage.getItem("collective"),

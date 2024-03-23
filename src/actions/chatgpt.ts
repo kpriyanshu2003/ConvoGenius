@@ -1,17 +1,31 @@
-// import OpenAI from "openai";
-const OpenAI = require("openai").default;
+"use server";
+import axios from "axios";
 
-const openai = new OpenAI({
-  apiKey: "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", // Replace "YOUR_API_KEY_HERE" with your actual API key
-});
+const options = {
+  method: "POST",
+  url: `https://${process.env.NEXT_PUBLIC_RAPID_API_HOST}/v1/chat/completions`,
+  headers: {
+    "content-type": "application/json",
+    "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
+    "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
+  },
+  data: {
+    messages: [{ role: "user", content: "Hello, how is it going?" }],
+    model: "gpt-4-turbo-preview",
+    max_tokens: 200,
+    temperature: 0.9,
+  },
+};
 
-async function main() {
-  const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: "You are a helpful assistant." }],
-    model: "gpt-3.5-turbo",
-  });
-
-  console.log(completion.choices);
+export async function chatGPT(message: string) {
+  try {
+    if (!message) return null;
+    options.data.messages[0].content = message;
+    const res = await axios.request(options);
+    // console.log(res.data);
+    return res.data.choices[0].message.content;
+  } catch (error) {
+    console.error("Error in chatGPT: ", error);
+    return null;
+  }
 }
-
-main();
