@@ -15,10 +15,10 @@ import { deleteCollective } from "@/actions/collectiveInteractions";
 
 // TODO : Add types for props
 function HistoryListing({ id, userId, createdAt, updatedAt }) {
-  const route = useRouter();
+  const router = useRouter();
   return (
     <div
-      className="flex justify-between items-center my-2 cursor-pointer hover:bg-[#212121] py-1 px-2 rounded-md group"
+      className="text-sm flex justify-between items-center my-2 cursor-pointer hover:bg-[#212121] py-2 px-2 rounded-md group"
       onClick={() => router.push(`/${id}`)}
     >
       {id.substring(0, 20)}

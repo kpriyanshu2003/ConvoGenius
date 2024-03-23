@@ -12,10 +12,11 @@ import {
 } from "@/actions/collectiveInteractions";
 import { createInteraction } from "@/actions/interactions";
 import { useRouter } from "next/navigation";
+import ChatList from "./ChatArea/ChatList";
 
 export default function ChatArea({ params }: { params?: string }) {
   const router = useRouter();
-  const [data, setData] = React.useState<any>([]);
+  const [data, setData] = React.useState<any>(null);
   const [message, setMessage] = React.useState("");
   const autoResize = (textarea: EventTarget & HTMLTextAreaElement) => {
     if (textarea.value.trim().length >= 88) {
@@ -25,8 +26,9 @@ export default function ChatArea({ params }: { params?: string }) {
   };
   React.useEffect(() => {
     if (!params) return;
+    // TODO : Add types
     getCollective(params.id)
-      .then((data) => setData(data ?? []))
+      .then((data) => setData(data ?? ""))
       .catch((error) => {
         console.log(error);
       });
@@ -49,7 +51,6 @@ export default function ChatArea({ params }: { params?: string }) {
       })
       .catch((error) => console.log(error));
   };
-
   return (
     <div className="relative flex items-start bg-[#212121] text-white">
       <SideBar className="h-screen z-10 flex items-center relative" />
@@ -84,7 +85,13 @@ export default function ChatArea({ params }: { params?: string }) {
             </div>
           </div>
         )}
-        {params && <div className="border p-20 h-full">Chat GPT Data</div>}
+        {params && (
+          <div className="border p-20 h-full">
+            {data?.map((item: any, index: number) => (
+              <ChatList key={index} {...item} />
+            ))}
+          </div>
+        )}
         <div className="flex w-full max-w-3xl items-end space-x-2 absolute bottom-10 left-1/2 -translate-x-1/2">
           <Textarea
             placeholder="Message ConvoGenius...."

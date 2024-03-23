@@ -31,15 +31,14 @@ model Interations {
   createdAt               DateTime               @default(now())
   updatedAt               DateTime               @updatedAt
   collectionInteractionId String?
-  CollectionInteraction   CollectionInteraction? @relation(fields: [collectionInteractionId], references: [id], onDelete: Cascade)
+  CollectionInteraction   CollectionInteraction? @relation(fields: [collectionInteractionId], references: [id])
 }
 
-// collection interaction shall store array of interaction ids
 model CollectionInteraction {
-  id          String        @id @default(cuid())  
+  id          String        @id @default(cuid())
   userId      String
   user        User          @relation(fields: [userId], references: [id])
-  interaction Interations[] 
+  interaction Interations[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }

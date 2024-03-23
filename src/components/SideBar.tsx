@@ -17,7 +17,7 @@ function SideBar({ className }: { className?: string }) {
   }, []);
 
   React.useEffect(() => {
-    getAllCollective(localStorage.getItem("user"))
+    getAllCollective(localStorage.getItem("user") ?? " ")
       .then((data) => setCollective(data || []))
       .catch((error) => {
         console.log(error);
