@@ -6,6 +6,7 @@ import OAuth from "./OAuth";
 import Link from "next/link";
 import { signInUsingEmailPassword } from "@/actions/auth";
 import { useRouter } from "next/navigation";
+import { getUserId } from "@/actions/user";
 
 function SignInForm() {
   const router = useRouter();
@@ -14,14 +15,15 @@ function SignInForm() {
     e.preventDefault();
     signInUsingEmailPassword(formData.email, formData.password)
       .then((res) => {
-        // document.cookie = `access_token=${res?.session.access_token}; path=/; max-age=86400`;
-        if (res) router.push("/");
+        getUserId(res?.user.id)
+          .then((user) => localStorage.setItem("user", user?.id || ""))
+          .then(() => router.push("/"));
       })
       .catch((err) => console.log(err));
   };
   return (
     <div className="grid place-items-center h-screen relative">
-      <>
+      <div className="">
         <div className="top-10 left-1/2 -translate-x-1/2 absolute h-12  w-12 px-2 aspect-square flex items-center justify-center rounded-full bg-white text-gray-950">
           <svg
             width="41"
@@ -47,6 +49,7 @@ function SignInForm() {
           <span className=" font-bold text-3xl my-5 block">
             Login to your Account
           </span>
+
           <Input
             placeholder="Email"
             type="email"
@@ -73,13 +76,13 @@ function SignInForm() {
           </Button>
         </form>
         <span className="text-sm text-center block my-4">
-          Already have an account ?
+          Don&apos;t have an account?{" "}
           <Link href="/signup" className="text-[#10a37f] ml-2">
-            Login
+            Create
           </Link>
         </span>
         <OAuth />
-      </>
+      </div>
     </div>
   );
 }

@@ -24,7 +24,7 @@ function SignupForm() {
     )
       .then((res) => {
         console.log(res);
-        if (res) router.push("/");
+        if (res) router.push("/signin");
       })
       .catch((err) => console.log(err));
   };

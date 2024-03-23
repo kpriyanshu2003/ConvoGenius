@@ -5,11 +5,23 @@ import { IoIosArrowForward } from "react-icons/io";
 import history from "@/constants/history.json";
 import HistoryListing from "./Sidebar/HistoryListing";
 import UserAccount from "./Sidebar/UserAccount";
+import { getAllCollective } from "@/actions/collectiveInteractions";
 
 function SideBar({ className }: { className?: string }) {
+  const [collective, setCollective] = React.useState<
+    { id: string; userId: string; createdAt: Date; updatedAt: Date }[]
+  >([]);
   const [state, setState] = React.useState(false);
   React.useEffect(() => {
     setState(true);
+  }, []);
+
+  React.useEffect(() => {
+    getAllCollective(localStorage.getItem("user"))
+      .then((data) => setCollective(data || []))
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   return (
@@ -52,7 +64,7 @@ function SideBar({ className }: { className?: string }) {
           <RxPencil2 className="w-6 h-6" />
         </div>
         <div className={`${state ? "" : "hidden"}`}>
-          {history.map((his) => (
+          {collective.map((his) => (
             <HistoryListing key={his.id} {...his} />
           ))}
         </div>

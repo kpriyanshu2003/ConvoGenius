@@ -18,27 +18,28 @@ model User {
   id                    String                  @id @default(cuid())
   email                 String                  @unique
   name                  String
-  uid                   String
+  uid                   String                  @unique
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @updatedAt
   CollectionInteraction CollectionInteraction[]
 }
 
 model Interations {
-  id                    String                  @id @default(cuid())
-  title                 String
-  content               String
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
-  CollectionInteraction CollectionInteraction[]
+  id                      String                 @id @default(cuid())
+  title                   String
+  content                 String
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  collectionInteractionId String?
+  CollectionInteraction   CollectionInteraction? @relation(fields: [collectionInteractionId], references: [id], onDelete: Cascade)
 }
 
+// collection interaction shall store array of interaction ids
 model CollectionInteraction {
-  id            String      @id @default(cuid())
-  userId        String
-  user          User        @relation(fields: [userId], references: [id])
-  interactionId String
-  interaction   Interations @relation(fields: [interactionId], references: [id])
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id          String        @id @default(cuid())  
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  interaction Interations[] 
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }

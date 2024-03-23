@@ -37,6 +37,7 @@ function UserAccount() {
             supabase.auth
               .signOut()
               .then(() => console.log("signed out"))
+              .then(() => localStorage.removeItem("user"))
               .then(() => router.push("/signin"))
               .catch((e) => console.log(e))
           }

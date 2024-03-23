@@ -1,31 +1,27 @@
 import React from "react";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import { BsArchive } from "react-icons/bs";
-import { Button } from "@/components/ui/button";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { FaPencilAlt } from "react-icons/fa";
 import { IoShareOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-type Checked = DropdownMenuCheckboxItemProps["checked"];
+import { useRouter } from "next/navigation";
+import { deleteCollective } from "@/actions/collectiveInteractions";
 
 // TODO : Add types for props
-function HistoryListing({ id, name, email }) {
-  const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
-  const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
-  const [showPanel, setShowPanel] = React.useState<Checked>(false);
-
+function HistoryListing({ id, userId, createdAt, updatedAt }) {
+  const route = useRouter();
   return (
-    <div className="flex justify-between items-center my-2 cursor-pointer hover:bg-[#212121] py-1 px-2 rounded-md group">
-      {name}
+    <div
+      className="flex justify-between items-center my-2 cursor-pointer hover:bg-[#212121] py-1 px-2 rounded-md group"
+      onClick={() => router.push(`/${id}`)}
+    >
+      {id.substring(0, 20)}
       <div className="relative gap-2 items-center group-hover:flex hidden transition-all duration-300">
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="rounded-lg">
@@ -42,7 +38,10 @@ function HistoryListing({ id, name, email }) {
               <FaPencilAlt />
               <span>Rename</span>
             </DropdownMenuLabel>
-            <DropdownMenuLabel className="hover:bg-[#424242] py-4 flex items-center gap-3 text-red-400 rounded-lg">
+            <DropdownMenuLabel
+              className="hover:bg-[#424242] py-4 flex items-center gap-3 text-red-400 rounded-lg"
+              onClick={() => deleteCollective(id)}
+            >
               <RiDeleteBin5Line />
               <span>Delete Chat</span>
             </DropdownMenuLabel>
