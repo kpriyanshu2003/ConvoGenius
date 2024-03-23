@@ -2,7 +2,6 @@
 import React from "react";
 import { RxPencil2 } from "react-icons/rx";
 import { IoIosArrowForward } from "react-icons/io";
-import history from "@/constants/history.json";
 import HistoryListing from "./Sidebar/HistoryListing";
 import UserAccount from "./Sidebar/UserAccount";
 import { getAllCollective } from "@/actions/collectiveInteractions";

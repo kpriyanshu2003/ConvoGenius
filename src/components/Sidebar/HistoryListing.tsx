@@ -14,7 +14,17 @@ import { useRouter } from "next/navigation";
 import { deleteCollective } from "@/actions/collectiveInteractions";
 
 // TODO : Add types for props
-function HistoryListing({ id, userId, createdAt, updatedAt }) {
+function HistoryListing({
+  id,
+  userId,
+  createdAt,
+  updatedAt,
+}: {
+  id: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}) {
   const router = useRouter();
   return (
     <div

@@ -28,8 +28,8 @@ export default function ChatArea({ params }: { params?: string }) {
   React.useEffect(() => {
     if (!params) router.push("/");
     // TODO : Add types
-    localStorage.setItem("collective", params?.id ?? "");
-    getCollective(params?.id ?? "")
+    localStorage.setItem("collective", (params as { id?: string })?.id ?? "");
+    getCollective((params as { id?: string })?.id ?? "")
       .then((data) => setData(data ?? ""))
       .catch((error) => {
         console.log(error);
