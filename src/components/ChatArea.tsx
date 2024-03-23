@@ -25,14 +25,15 @@ export default function ChatArea({ params }: { params?: string }) {
     } else textarea.style.height = "48px";
   };
   React.useEffect(() => {
-    if (!params) return;
+    if (!params) router.push("/");
     // TODO : Add types
-    getCollective(params.id)
+    localStorage.setItem("collective", params?.id ?? "");
+    getCollective(params?.id ?? "")
       .then((data) => setData(data ?? ""))
       .catch((error) => {
         console.log(error);
       });
-  }, [params]);
+  }, [params, router]);
 
   const handleInteract = () => {
     createInteraction({ title: message, content: "Lorem Ipsum" })
@@ -86,7 +87,7 @@ export default function ChatArea({ params }: { params?: string }) {
           </div>
         )}
         {params && (
-          <div className="border p-20 h-full">
+          <div className="p-20 h-full">
             {data?.map((item: any, index: number) => (
               <ChatList key={index} {...item} />
             ))}

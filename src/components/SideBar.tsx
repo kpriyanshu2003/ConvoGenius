@@ -6,8 +6,10 @@ import history from "@/constants/history.json";
 import HistoryListing from "./Sidebar/HistoryListing";
 import UserAccount from "./Sidebar/UserAccount";
 import { getAllCollective } from "@/actions/collectiveInteractions";
+import { useRouter } from "next/navigation";
 
 function SideBar({ className }: { className?: string }) {
+  const router = useRouter();
   const [collective, setCollective] = React.useState<
     { id: string; userId: string; createdAt: Date; updatedAt: Date }[]
   >([]);
@@ -32,6 +34,7 @@ function SideBar({ className }: { className?: string }) {
         }`}
       >
         <div
+          onClick={() => router.push("/")}
           className={`bg-[#171717] w-64 h-12  rounded-lg p-3 flex items-center justify-between hover:bg-[#212121] cursor-pointer transition-all duration-300 ${
             state ? "" : "hidden"
           }`}
@@ -69,7 +72,9 @@ function SideBar({ className }: { className?: string }) {
           ))}
         </div>
         <div
-          className={`absolute bottom-5 p-4 hover:bg-[#212121] rounded-lg w-64`}
+          className={`${
+            state ? "" : "hidden"
+          } absolute bottom-5 p-4 hover:bg-[#212121] rounded-lg w-64`}
         >
           <UserAccount />
         </div>
